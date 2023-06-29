@@ -20,10 +20,10 @@ function Character() {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -61,24 +61,25 @@ function Character() {
       setTouchStartX(event.touches[0].clientX);
       setTouchStartY(event.touches[0].clientY);
     };
-
     const handleTouchMove = (event) => {
-      const touchCurrentX = event.touches[0].clientX;
-      const touchCurrentY = event.touches[0].clientY;
-      const deltaX = touchCurrentX - touchStartX;
-      const deltaY = touchCurrentY - touchStartY;
-
-      setTouchStartX(touchCurrentX);
-      setTouchStartY(touchCurrentY);
-
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        setLayer(deltaX > 0 ? FACE_LEFT : FACE_RIGHT);
-      } else {
-        setLayer(deltaY > 0 ? FACE_LEFT : FACE_RIGHT);
-      }
-
-      setShouldAnimate(true);
-    };
+        const touchCurrentX = event.touches[0].clientX;
+        const touchCurrentY = event.touches[0].clientY;
+        const deltaX = touchCurrentX - touchStartX;
+        const deltaY = touchCurrentY - touchStartY;
+      
+        setTouchStartX(touchCurrentX);
+        setTouchStartY(touchCurrentY);
+      
+        if (deltaX > 0 || deltaY < 0) {
+          setLayer(FACE_RIGHT);
+        } else {
+          setLayer(FACE_LEFT);
+        }
+      
+        setShouldAnimate(true);
+      };
+      
+      
 
     const handleTouchEnd = () => {
       setShouldAnimate(false);
