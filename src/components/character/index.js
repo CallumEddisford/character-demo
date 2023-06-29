@@ -41,16 +41,45 @@ function Character() {
       }, 200);
     };
 
+    const handleTouchStart = (event) => {
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (event) => {
+      const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      setShouldAnimate(true);
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        setLayer(deltaX > 0 ? FACE_RIGHT : FACE_LEFT);
+      } else {
+        setLayer(deltaY > 0 ? FACE_LEFT : FACE_RIGHT);
+      }
+
+      clearTimeout(scrollEndTimeout);
+      scrollEndTimeout = setTimeout(() => {
+        setShouldAnimate(false);
+      }, 200);
+    };
+
+    let touchStartX, touchStartY;
     let scrollEndTimeout;
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
     document.addEventListener("wheel", handleWheel, { passive: true });
+    document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("wheel", handleWheel);
+      document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchend", handleTouchEnd);
       clearTimeout(scrollEndTimeout);
     };
   }, []);

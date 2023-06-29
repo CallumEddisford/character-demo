@@ -23,6 +23,39 @@ const HorizontalPage = ({ children }) => {
       }
     };
 
+    const handleTouchStart = (event) => {
+      const touchStartX = event.touches[0].clientX;
+      const touchStartY = event.touches[0].clientY;
+
+      const handleTouchMove = (event) => {
+        const touchCurrentX = event.touches[0].clientX;
+        const touchCurrentY = event.touches[0].clientY;
+
+        const deltaX = touchCurrentX - touchStartX;
+        const deltaY = touchCurrentY - touchStartY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          event.preventDefault();
+
+          if (containerRef.current) {
+            containerRef.current.scrollLeft -= deltaX;
+          }
+        } else {
+          if (containerRef.current) {
+            containerRef.current.scrollLeft -= deltaY * wheelScrollFactor; // Adjust the scroll amount for touch events
+          }
+        }
+      };
+
+      const handleTouchEnd = () => {
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+      };
+
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+    };
+
     const handleKeyDown = (event) => {
       const { keyCode } = event;
       const arrowKeys = [37, 39]; // Left and Right arrow key codes
@@ -63,10 +96,12 @@ const HorizontalPage = ({ children }) => {
     };
 
     document.addEventListener('wheel', handleScroll, { passive: false });
+    document.addEventListener('touchstart', handleTouchStart, { passive: false });
     document.addEventListener('keydown', handleKeyDown);
 
     return () => {
       document.removeEventListener('wheel', handleScroll, { passive: false });
+      document.removeEventListener('touchstart', handleTouchStart, { passive: false });
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
