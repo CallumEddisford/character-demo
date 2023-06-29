@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from 'react';
-import styles from './page.module.css';
+import React, { useRef, useEffect } from "react";
+import styles from "./page.module.css";
 
 const HorizontalPage = ({ children }) => {
   const containerRef = useRef(null);
   const scrollAmount = 0.1; // Adjust scroll amount as needed for touch events
-  const wheelScrollFactor = 0.25; // Adjust the scroll factor for the wheel
+  const wheelScrollFactor = 0.15; // Adjust the scroll factor for the wheel
 
   useEffect(() => {
     const handleScroll = (event) => {
@@ -14,7 +14,7 @@ const HorizontalPage = ({ children }) => {
         event.preventDefault();
 
         if (containerRef.current) {
-          containerRef.current.scrollLeft += deltaX;
+          containerRef.current.scrollLeft += deltaX * wheelScrollFactor;
         }
       } else {
         if (containerRef.current) {
@@ -48,12 +48,14 @@ const HorizontalPage = ({ children }) => {
       };
 
       const handleTouchEnd = () => {
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);
+        document.removeEventListener("touchmove", handleTouchMove);
+        document.removeEventListener("touchend", handleTouchEnd);
       };
 
-      document.addEventListener('touchmove', handleTouchMove, { passive: false });
-      document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleTouchEnd);
     };
 
     const handleKeyDown = (event) => {
@@ -66,7 +68,7 @@ const HorizontalPage = ({ children }) => {
         const scrollLeft = containerRef.current.scrollLeft;
         const scrollDirection = keyCode === 37 ? -1 : 1; // -1 for left, 1 for right
 
-        smoothScroll(scrollLeft, scrollDirection * scrollAmount);
+        smoothScroll(scrollLeft, scrollDirection * 20);
       }
     };
 
@@ -95,14 +97,18 @@ const HorizontalPage = ({ children }) => {
       return (-c / 2) * (t * (t - 2) - 1) + b;
     };
 
-    document.addEventListener('wheel', handleScroll, { passive: false });
-    document.addEventListener('touchstart', handleTouchStart, { passive: false });
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("wheel", handleScroll, { passive: false });
+    document.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    document.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.removeEventListener('wheel', handleScroll, { passive: false });
-      document.removeEventListener('touchstart', handleTouchStart, { passive: false });
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("wheel", handleScroll, { passive: false });
+      document.removeEventListener("touchstart", handleTouchStart, {
+        passive: false,
+      });
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
