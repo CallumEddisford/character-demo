@@ -12,6 +12,20 @@ function Character() {
   const [shouldAnimate, setShouldAnimate] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
   const [touchStartY, setTouchStartY] = useState(0);
+  const [isWindowSmaller, setIsWindowSmaller] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsWindowSmaller(window.innerWidth < 500);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -97,6 +111,7 @@ function Character() {
       frameWidth={183.75}
       frameHeight={275.25}
       duration={500}
+      elementWidth={isWindowSmaller ? 120 : 180}
       isInfinite
       shouldAnimate={shouldAnimate}
       layer={shouldAnimate ? layer : 0}
