@@ -3,7 +3,7 @@ import styles from './page.module.css';
 
 const HorizontalPage = ({ children }) => {
   const containerRef = useRef(null);
-  const scrollAmount = 50; // Adjust scroll amount as needed
+  const scrollAmount = 0.1; // Adjust scroll amount as needed for touch events
   const wheelScrollFactor = 0.25; // Adjust the scroll factor for the wheel
 
   useEffect(() => {
@@ -31,8 +31,8 @@ const HorizontalPage = ({ children }) => {
         const touchCurrentX = event.touches[0].clientX;
         const touchCurrentY = event.touches[0].clientY;
 
-        const deltaX = touchCurrentX - touchStartX;
-        const deltaY = touchCurrentY - touchStartY;
+        const deltaX = (touchCurrentX - touchStartX) * scrollAmount; // Adjust the scroll amount for touch events
+        const deltaY = (touchCurrentY - touchStartY) * scrollAmount; // Adjust the scroll amount for touch events
 
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
           event.preventDefault();

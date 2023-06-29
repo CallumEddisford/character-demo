@@ -10,6 +10,8 @@ function Character() {
 
   const [layer, setLayer] = useState(FACE_RIGHT);
   const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchStartY, setTouchStartY] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -42,36 +44,39 @@ function Character() {
     };
 
     const handleTouchStart = (event) => {
-      touchStartX = event.touches[0].clientX;
-      touchStartY = event.touches[0].clientY;
+      setTouchStartX(event.touches[0].clientX);
+      setTouchStartY(event.touches[0].clientY);
     };
 
-    const handleTouchEnd = (event) => {
-      const touchEndX = event.changedTouches[0].clientX;
-      const touchEndY = event.changedTouches[0].clientY;
-      const deltaX = touchEndX - touchStartX;
-      const deltaY = touchEndY - touchStartY;
+    const handleTouchMove = (event) => {
+      const touchCurrentX = event.touches[0].clientX;
+      const touchCurrentY = event.touches[0].clientY;
+      const deltaX = touchCurrentX - touchStartX;
+      const deltaY = touchCurrentY - touchStartY;
 
-      setShouldAnimate(true);
+      setTouchStartX(touchCurrentX);
+      setTouchStartY(touchCurrentY);
+
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        setLayer(deltaX > 0 ? FACE_RIGHT : FACE_LEFT);
+        setLayer(deltaX > 0 ? FACE_LEFT : FACE_RIGHT);
       } else {
         setLayer(deltaY > 0 ? FACE_LEFT : FACE_RIGHT);
       }
 
-      clearTimeout(scrollEndTimeout);
-      scrollEndTimeout = setTimeout(() => {
-        setShouldAnimate(false);
-      }, 200);
+      setShouldAnimate(true);
     };
 
-    let touchStartX, touchStartY;
+    const handleTouchEnd = () => {
+      setShouldAnimate(false);
+    };
+
     let scrollEndTimeout;
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
     document.addEventListener("wheel", handleWheel, { passive: true });
     document.addEventListener("touchstart", handleTouchStart);
+    document.addEventListener("touchmove", handleTouchMove);
     document.addEventListener("touchend", handleTouchEnd);
 
     return () => {
@@ -79,6 +84,7 @@ function Character() {
       document.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("wheel", handleWheel);
       document.removeEventListener("touchstart", handleTouchStart);
+      document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
       clearTimeout(scrollEndTimeout);
     };
