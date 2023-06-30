@@ -25,26 +25,20 @@ const HorizontalPage = ({ children }) => {
 
     const handleTouchStart = (event) => {
       const touchStartX = event.touches[0].clientX;
-      const touchStartY = event.touches[0].clientY;
 
       const handleTouchMove = (event) => {
         const touchCurrentX = event.touches[0].clientX;
-        const touchCurrentY = event.touches[0].clientY;
 
         const deltaX = (touchCurrentX - touchStartX) * scrollAmount; // Adjust the scroll amount for touch events
-        const deltaY = (touchCurrentY - touchStartY) * scrollAmount; // Adjust the scroll amount for touch events
 
-        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+
+        if (Math.abs(deltaX)) {
           event.preventDefault();
 
           if (containerRef.current) {
             containerRef.current.scrollLeft -= deltaX;
           }
-        } else {
-          if (containerRef.current) {
-            containerRef.current.scrollLeft -= deltaY * wheelScrollFactor; // Adjust the scroll amount for touch events
-          }
-        }
+        } 
       };
 
       const handleTouchEnd = () => {

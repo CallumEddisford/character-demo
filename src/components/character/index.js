@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ReactSpriter from "react-spriter";
 import sprite from "./character.png";
 
@@ -10,9 +10,8 @@ function Character() {
 
   const [layer, setLayer] = useState(FACE_RIGHT);
   const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [touchStartX, setTouchStartX] = useState(0);
-  const [touchStartY, setTouchStartY] = useState(0);
   const [isWindowSmaller, setIsWindowSmaller] = useState(false);
+  const touchStartXRef = useRef(0);
 
   useEffect(() => {
     const handleResize = () => {
@@ -58,28 +57,20 @@ function Character() {
     };
 
     const handleTouchStart = (event) => {
-      setTouchStartX(event.touches[0].clientX);
-      setTouchStartY(event.touches[0].clientY);
+      touchStartXRef.current = event.touches[0].clientX;
     };
+
     const handleTouchMove = (event) => {
-        const touchCurrentX = event.touches[0].clientX;
-        const touchCurrentY = event.touches[0].clientY;
-        const deltaX = touchCurrentX - touchStartX;
-        const deltaY = touchCurrentY - touchStartY;
-      
-        setTouchStartX(touchCurrentX);
-        setTouchStartY(touchCurrentY);
-      
-        if (deltaX > 0 || deltaY < 0) {
-          setLayer(FACE_RIGHT);
-        } else {
-          setLayer(FACE_LEFT);
-        }
-      
-        setShouldAnimate(true);
-      };
-      
-      
+      const touchCurrentX = event.touches[0].clientX;
+      const deltaX = touchCurrentX - touchStartXRef.current;
+
+      if (deltaX < 0) {
+        setLayer(FACE_RIGHT);
+      } else {
+        setLayer(FACE_LEFT);
+      }
+      setShouldAnimate(true);
+    };
 
     const handleTouchEnd = () => {
       setShouldAnimate(false);
@@ -115,7 +106,7 @@ function Character() {
       elementWidth={isWindowSmaller ? 120 : 180}
       isInfinite
       shouldAnimate={shouldAnimate}
-      layer={shouldAnimate ? layer : 0}
+      layer={shouldAnimate ? layer : FACE_DOWN}
     />
   );
 }
