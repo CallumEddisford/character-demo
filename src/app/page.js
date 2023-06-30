@@ -21,7 +21,11 @@ const Home = () => {
               <div key={`slide-${index}`} className={styles.scene}>
                 <div className={styles.card}>
                   <h2>A cool story</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit neque nec maximus accumsan. Nullam nisl felis, ultrices ac lacus eu, auctor pretium nibh.</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                    hendrerit neque nec maximus accumsan. Nullam nisl felis,
+                    ultrices ac lacus eu, auctor pretium nibh.
+                  </p>
                 </div>
               </div>
             );
