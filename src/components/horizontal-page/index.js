@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 
 const HorizontalPage = ({ children, onChange }) => {
   const containerRef = useRef(null);
-  const scrollAmount = 50; // Adjust scroll amount as needed for touch events
+  const scrollAmount = 40; // Adjust scroll amount as needed for touch events
   const wheelScrollFactor = 0.15; // Adjust the scroll factor for the wheel
 
   useEffect(() => {

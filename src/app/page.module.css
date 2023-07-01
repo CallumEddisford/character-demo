@@ -14,16 +14,22 @@
   background-size: 20%;
   background-repeat: repeat-x;
   position: relative;
+}
 
-  @media (min-width: 800px) {
+@media (min-width: 800px) {
+  .scrollable-content {
     background-size: 10%;
   }
+}
 
-  @media (min-width: 1000px) {
+@media (min-width: 1000px) {
+  .scrollable-content {
     background-size: 8%;
   }
+}
 
-  @media (min-width: 1500px) {
+@media (min-width: 1500px) {
+  .scrollable-content {
     background-size: 5%;
   }
 }
@@ -76,8 +82,10 @@
   position: fixed;
   bottom: 0;
   left: calc(50% - 91.875px);
+}
 
-  @media (max-width: 500px) {
+@media (max-width: 600px) {
+  .character {
     left: calc(50% - 60px);
   }
 }
