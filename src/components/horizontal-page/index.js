@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import styles from "./page.module.css";
 
-const HorizontalPage = ({ children }) => {
+const HorizontalPage = ({ children, onChange }) => {
   const containerRef = useRef(null);
   const scrollAmount = 0.1; // Adjust scroll amount as needed for touch events
   const wheelScrollFactor = 0.15; // Adjust the scroll factor for the wheel
@@ -15,10 +15,16 @@ const HorizontalPage = ({ children }) => {
 
         if (containerRef.current) {
           containerRef.current.scrollLeft += deltaX * wheelScrollFactor;
+          if (onChange) {
+            onChange(containerRef.current.scrollLeft);
+          }
         }
       } else {
         if (containerRef.current) {
-          containerRef.current.scrollLeft += deltaY * wheelScrollFactor; // Adjust the scroll amount for the wheel
+          containerRef.current.scrollLeft += deltaY * wheelScrollFactor;
+          if (onChange) {
+            onChange(containerRef.current.scrollLeft);
+          }
         }
       }
     };
@@ -29,14 +35,16 @@ const HorizontalPage = ({ children }) => {
       const handleTouchMove = (event) => {
         const touchCurrentX = event.touches[0].clientX;
 
-        const deltaX = (touchCurrentX - touchStartX) * scrollAmount; // Adjust the scroll amount for touch events
-
+        const deltaX = (touchCurrentX - touchStartX) * scrollAmount;
 
         if (Math.abs(deltaX)) {
           event.preventDefault();
 
           if (containerRef.current) {
             containerRef.current.scrollLeft -= deltaX;
+            if (onChange) {
+              onChange(containerRef.current.scrollLeft);
+            }
           }
         } 
       };
@@ -75,6 +83,9 @@ const HorizontalPage = ({ children }) => {
         currentTime += increment;
         const scrollValue = easeInOutQuad(currentTime, start, change, duration);
         containerRef.current.scrollLeft = scrollValue;
+        if (onChange) {
+          onChange(containerRef.current.scrollLeft);
+        }
 
         if (currentTime < duration) {
           requestAnimationFrame(animateScroll);
