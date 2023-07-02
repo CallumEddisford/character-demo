@@ -87,6 +87,7 @@
 @media (max-width: 600px) {
   .character {
     left: calc(50% - 60px);
+    bottom: 0.5rem;
   }
 }
 

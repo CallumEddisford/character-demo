@@ -15,7 +15,7 @@ function Character() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsWindowSmaller(window.innerWidth < 500);
+      setIsWindowSmaller(window.innerWidth < 600);
     };
 
     handleResize();
@@ -102,7 +102,7 @@ function Character() {
       spriteWidth={735}
       frameWidth={183.75}
       frameHeight={275.25}
-      duration={500}
+      duration={isWindowSmaller ? 750 : 500}
       elementWidth={isWindowSmaller ? 120 : 180}
       isInfinite
       shouldAnimate={shouldAnimate}
