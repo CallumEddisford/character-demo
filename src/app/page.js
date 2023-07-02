@@ -39,7 +39,7 @@ const Home = () => {
               </div>
             );
           })}
-          <div className={styles.city} style={{ backgroundImage: `url(${city.src})`, backgroundPositionX: `-${backgroundOffset / 5}px` }}
+          <div className={styles.city} style={{ backgroundImage: `url(${city.src})`, backgroundPositionX: `-${backgroundOffset / 15}px` }}
           
           ></div>
           <div className={styles.ground}>
