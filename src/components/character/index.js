@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import ReactSpriter from "react-spriter";
 import sprite from "./character.png";
 
-function Character() {
+function Character({ shouldFaceUp }) {
   const FACE_DOWN = 0;
   const FACE_UP = 1;
   const FACE_LEFT = 2;
@@ -106,7 +106,7 @@ function Character() {
       elementWidth={isWindowSmaller ? 120 : 180}
       isInfinite
       shouldAnimate={shouldAnimate}
-      layer={shouldAnimate ? layer : FACE_DOWN}
+      layer={shouldAnimate ? layer : shouldFaceUp ? FACE_UP : FACE_DOWN}
     />
   );
 }
